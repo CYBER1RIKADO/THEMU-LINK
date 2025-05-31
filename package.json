@@ -1,13 +1,10 @@
 {
-  "name": "my-node-app",
+  "name": "temu-link-share",
   "version": "1.0.0",
-  "description": "Node.js app for Render deployment",
+  "description": "Simple link sharing app for Render",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
-  },
-  "engines": {
-    "node": ">=14"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2"
