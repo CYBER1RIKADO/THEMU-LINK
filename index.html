@@ -1,38 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="si">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Themu Link Share System</title>
+  <title>TEMU Link Share System</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #e0e0e0;
       text-align: center;
     }
 
     h1 {
       margin-top: 30px;
-      font-size: 2em;
+      font-size: 2.2em;
+      color: #00adb5;
     }
 
     .weather-box {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.4);
       padding: 1rem;
       border-radius: 12px;
       margin: 1rem auto;
       width: max-content;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
     .weather-title {
       font-weight: bold;
       font-size: 1.2rem;
-      color: #ffd700;
+      color: #00ffcc;
       margin-bottom: 5px;
     }
 
@@ -48,32 +48,39 @@
       margin: 10px;
       width: 80%;
       max-width: 400px;
+      background: #222;
+      color: white;
     }
 
     button {
       padding: 12px 25px;
       font-weight: bold;
-      background-color: #ff9800;
+      background-color: #00adb5;
       border: none;
       border-radius: 10px;
       margin-top: 10px;
       cursor: pointer;
       color: white;
       font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #019ca1;
     }
 
     .notice {
-      background-color: #e91e63;
+      background-color: #393e46;
       padding: 10px;
       margin: 20px auto;
       border-radius: 10px;
       width: 90%;
       max-width: 500px;
-      color: white;
+      color: #eeeeee;
     }
 
     .shared-links {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.05);
       padding: 1rem;
       border-radius: 10px;
       margin-top: 20px;
@@ -85,6 +92,7 @@
 
     .shared-links h3 {
       margin-bottom: 10px;
+      color: #00adb5;
     }
 
     .link-item {
@@ -97,18 +105,30 @@
     .link-item span {
       display: block;
       font-weight: bold;
-      color: #ffeb3b;
+      color: #ffdd57;
     }
 
     .locked {
       opacity: 0.5;
       pointer-events: none;
     }
+
+    .visit-btn {
+      margin-top: 5px;
+      display: inline-block;
+      padding: 6px 14px;
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <h1>🚀 Themu Link Share System</h1>
+  <h1>🚀 TEMU LINK SHARE SYSTEM</h1>
 
   <!-- Weather Panel -->
   <div class="weather-box">
@@ -123,37 +143,54 @@
   <button onclick="submitLink()" id="submitBtn" class="locked">🔒 Submit කරන්න (Unlock කරන්න!)</button>
 
   <div class="notice">
-    ඔබගේ link එක submit කිරීමට, පහත තියෙන admin link එකට click කරලා unlock කරන්න! <br><br>
-    👉 පළමුව මෙය visit කරන්න: <br>
-    <a href="https://themu.me/your-admin-link" style="color: #fff; text-decoration: underline;" target="_blank">
-      https://themu.me/your-admin-link
+    ඔබගේ link එක submit කිරීමට, පහත තියෙන ලින්ක් එකක click කරලා unlock කරන්න!<br><br>
+        <a href="https://temu.com/u/lkxS02P0bMP6M" style="color: #fff; text-decoration: underline;" target="_blank">
+      https://temu.com/u/lkxS02P0bMP6M
     </a>
   </div>
 
   <div class="shared-links" id="linkList">
     <h3>📄 Share කරපු Links:</h3>
-    <div class="link-item">
-      <span>👤 Admin</span>
-      https://themu.me/your-admin-link
-    </div>
   </div>
 
   <script>
-    // Unlock logic (simulate unlock after click on admin link)
     let unlocked = false;
+    const linkList = document.getElementById("linkList");
 
-    window.addEventListener('focus', () => {
-      if (!unlocked) {
-        // Simulate admin link clicked and window refocused
+    const defaultLinks = [
+      { name: "👑 Admin", link: "https://themu.me/admin-link" },
+      { name: "👤 Owner", link: "https://themu.me/owner-link" }
+    ];
+
+    let unlockedLinks = new Set();
+
+    function renderLinks() {
+      linkList.innerHTML = "<h3>📄 Share කරපු Links:</h3>";
+      defaultLinks.slice(-10).forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "link-item";
+        div.innerHTML = \`<span>\${item.name}</span>\${item.link}<br><button class="visit-btn" onclick="unlockLink('\${item.link}')">Visit</button>\`;
+        linkList.appendChild(div);
+      });
+    }
+
+    function unlockLink(url) {
+      unlockedLinks.add(url);
+      checkUnlockStatus();
+      window.open(url, '_blank');
+    }
+
+    function checkUnlockStatus() {
+      const requiredLinks = defaultLinks.map(x => x.link);
+      if (requiredLinks.every(link => unlockedLinks.has(link))) {
+        unlocked = true;
         document.getElementById("submitBtn").classList.remove("locked");
         document.getElementById("submitBtn").textContent = "✅ Submit කරන්න!";
-        unlocked = true;
       }
-    });
+    }
 
     function submitLink() {
       if (!unlocked) return;
-
       const name = document.getElementById("username").value.trim();
       const link = document.getElementById("userlink").value.trim();
       if (!name || !link) {
@@ -161,16 +198,15 @@
         return;
       }
 
-      const div = document.createElement("div");
-      div.className = "link-item";
-      div.innerHTML = `<span>👤 ${name}</span>${link}`;
-      document.getElementById("linkList").appendChild(div);
+      defaultLinks.push({ name: "👤 " + name, link: link });
+      if (defaultLinks.length > 10) defaultLinks.shift();
+      renderLinks();
 
-      // Clear fields
       document.getElementById("username").value = "";
       document.getElementById("userlink").value = "";
     }
+
+    renderLinks();
   </script>
 </body>
-  </html>
-  
+</html>
