@@ -7,5 +7,4 @@ RUN apt-get update && \
   webp && \
   apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/*
-RUN npm install && npm install -g qrcode-terminal pm2
 CMD ["npm", "start"]
