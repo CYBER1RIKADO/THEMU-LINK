@@ -1,16 +1,11 @@
-# Dockerfile
-FROM node:lts-buster
+# Nginx base image එක භාවිතා කරනවා
+FROM nginx:alpine
 
-RUN apt-get update && \
-  apt-get install -y \
-  ffmpeg \
-  imagemagick \
-  webp && \
-  apt-get upgrade -y && \
-  rm -rf /var/lib/apt/lists/*
+# වෙබ් අඩවි ගොනු Nginx html folder එකට copy කරනවා
+COPY . /usr/share/nginx/html
 
-WORKDIR /app
-COPY . .
-RUN npm install
+# Port 80 expose කරනවා
+EXPOSE 80
 
-CMD ["npm", "start"]
+# Nginx start කරනවා
+CMD ["nginx", "-g", "daemon off;"]
