@@ -1,3 +1,4 @@
+# Dockerfile
 FROM node:lts-buster
 
 RUN apt-get update && \
@@ -7,4 +8,9 @@ RUN apt-get update && \
   webp && \
   apt-get upgrade -y && \
   rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY . .
+RUN npm install
+
 CMD ["npm", "start"]
